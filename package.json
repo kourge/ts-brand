@@ -1,0 +1,45 @@
+{
+  "name": "ts-brand",
+  "version": "0.0.1",
+  "description": "Reusable type branding in TypeScript",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kourge/ts-brand.git"
+  },
+  "keywords": [
+    "typescript",
+    "opaque",
+    "branding",
+    "type"
+  ],
+  "author": "Wil Lee <kourge@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kourge/ts-brand/issues"
+  },
+  "homepage": "https://github.com/kourge/ts-brand#readme",
+  "devDependencies": {
+    "@types/jest": "^21.1.1",
+    "jest": "^21.2.1",
+    "ts-jest": "^21.0.1",
+    "typescript": "^2.5.3"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ]
+  }
+}
