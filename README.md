@@ -8,6 +8,12 @@ by leveraging a technique that is called "type branding" in the TypeScript
 community. Type branding works by intersecting a base type with a object type
 with a non-existent property. 
 
+## Installation
+
+```
+npm install --save ts-brand
+```
+
 ## Motivation and Example
 
 Let's say we have the following API:
