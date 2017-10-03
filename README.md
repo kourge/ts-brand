@@ -6,7 +6,11 @@ https://basarat.gitbooks.io/typescript/docs/tips/nominalTyping.html
 )
 by leveraging a technique that is called "type branding" in the TypeScript
 community. Type branding works by intersecting a base type with a object type
-with a non-existent property. 
+with a non-existent property. It is closely related in principal and usage to
+Flow's
+[opaque type aliases](
+https://flow.org/en/docs/types/opaque-types/
+).
 
 ## Installation
 
