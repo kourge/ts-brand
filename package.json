@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Reusable type branding in TypeScript",
   "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "test": "jest",
     "build": "tsc"
