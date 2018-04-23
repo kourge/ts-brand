@@ -130,6 +130,11 @@ interface, thereby forming a recursive type. This is possible because there
 are no constraints on what the branding type must be. It does not have to be
 a string literal type, even though it often is.
 
+The third way is to define a branded type using an empty enum. In TypeScript,
+enums are nominally typed: two structurally identical enums are not considered
+the same type. This prevents two enum-branded types from ever being conflated
+for one another.
+
 Examples:
 
 ```ts
@@ -139,6 +144,8 @@ type DifferentUserId = Brand<number, 'user', '__kind__'>;
 interface Post {
   id: Brand<number, Post>;
 }
+enum TimeTag {}
+type Time = Brand<number, TimeTag>;
 ```
 
 ### `type AnyBrand`
