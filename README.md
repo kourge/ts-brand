@@ -1,16 +1,12 @@
 # ts-brand
 
 With `ts-brand`, you can achieve
-[nominal typing](
-https://basarat.gitbooks.io/typescript/docs/tips/nominalTyping.html
-)
+[nominal typing](https://basarat.gitbooks.io/typescript/docs/tips/nominalTyping.html)
 by leveraging a technique that is called "type branding" in the TypeScript
 community. Type branding works by intersecting a base type with a object type
 with a non-existent property. It is closely related in principal and usage to
 Flow's
-[opaque type aliases](
-https://flow.org/en/docs/types/opaque-types/
-).
+[opaque type aliases](https://flow.org/en/docs/types/opaque-types/).
 
 ## Installation
 
@@ -80,13 +76,12 @@ interface Post {
 ```
 
 We have:
-- Defined the ID types in terms of branded types with different branding types
-- Substituted ad-hoc `number` types with a
-[lookup type](
-https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript#keyof-and-lookup-types
-), thus designating the interface as the centerpiece
-- Retained the same runtime semantics as the original code
-- Made our original buggy example fail to compile
+
+* Defined the ID types in terms of branded types with different branding types
+* Substituted ad-hoc `number` types with a
+  [lookup type](https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript#keyof-and-lookup-types), thus designating the interface as the centerpiece
+* Retained the same runtime semantics as the original code
+* Made our original buggy example fail to compile
 
 There is one more risk left. If someone else were to define a different kind of
 `Post`, and also wrote `Brand<number, 'post'>`, it would still be possible to
@@ -136,11 +131,14 @@ are no constraints on what the branding type must be. It does not have to be
 a string literal type, even though it often is.
 
 Examples:
+
 ```ts
 type Path = Brand<string, 'path'>;
 type UserId = Brand<number, 'user'>;
 type DifferentUserId = Brand<number, 'user', '__kind__'>;
-interface Post { id: Brand<number, Post> }
+interface Post {
+  id: Brand<number, Post>;
+}
 ```
 
 ### `type AnyBrand`
@@ -160,6 +158,7 @@ value to a branded type derived from said base type. It can be thought of as
 the type of a "constructor", in the functional programming sense of the word.
 
 Example:
+
 ```ts
 type UserId = Brand<number, 'user'>;
 // A Brander<UserId> would take a number and return a UserId
@@ -174,6 +173,7 @@ It fulfills the contract of a `Brander`.
 At runtime, this function simply returns the value as-is.
 
 Example:
+
 ```ts
 type UserId = Brand<number, 'user'>;
 const UserId: Brander<UserId> = identity;
@@ -186,6 +186,7 @@ Produces a `Brander<B>`, given a brand type `B`. This simply returns
 type.
 
 Example:
+
 ```ts
 type UserId = Brand<number, 'user'>;
 const UserId = make<UserId>();
