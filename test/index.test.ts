@@ -1,4 +1,4 @@
-import {AnyBrand, identity, make} from '../src/index';
+import {AnyBrand, BaseOf, identity, make} from '../src/index';
 
 describe('identity', () => {
   it('returns the same value', () => {
@@ -10,6 +10,16 @@ describe('identity', () => {
 
 describe('make', () => {
   it('returns `identity`', () => {
-    expect(make<AnyBrand>()).toBe(identity);
+    const brander = make<AnyBrand>();
+    expect(brander).toBe(identity);
+    expect(brander(42)).toBe(42);
+  });
+  it('returns `generator`', () => {
+    function generator<B extends AnyBrand>(): BaseOf<B> {
+      return 'generated';
+    }
+    const brander = make(generator);
+    expect(brander).toBe(generator);
+    expect(brander()).toBe('generated');
   });
 });
