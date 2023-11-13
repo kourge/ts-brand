@@ -28,7 +28,7 @@
 export type Brand<
   Base,
   Branding,
-  ReservedName extends string = '__type__'
+  ReservedName extends string = '__type__',
 > = Base & {[K in ReservedName]: Branding} & {__witness__: Base};
 
 /**
@@ -36,7 +36,7 @@ export type Brand<
  * branding type. By itself it is not useful, but it can act as type constraint
  * when manipulating branded types in general.
  */
-export type AnyBrand = Brand<any, any>;
+export type AnyBrand = Brand<unknown, any>;
 
 /**
  * `BaseOf` is a type that takes any branded type `B` and yields its base type.
