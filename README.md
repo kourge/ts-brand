@@ -1,7 +1,7 @@
 # ts-brand
 
 With `ts-brand`, you can achieve
-[nominal typing](https://basarat.gitbooks.io/typescript/docs/tips/nominalTyping.html)
+[nominal typing](https://basarat.gitbook.io/typescript/main-1/nominaltyping)
 by leveraging a technique that is called "type branding" in the TypeScript
 community. Type branding works by intersecting a base type with a object type
 with a non-existent property. It is closely related in principal and usage to
