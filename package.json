@@ -1,6 +1,6 @@
 {
   "name": "ts-brand",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Reusable type branding in TypeScript",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
