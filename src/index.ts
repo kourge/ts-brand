@@ -77,18 +77,44 @@ export function identity<B extends AnyBrand>(underlying: BaseOf<B>): B {
 }
 
 /**
- * Produces a `Brander<B>`, given a brand type `B`. This simply returns
- * `identity` but relies on type inference to give the return type the correct
- * type.
+ * Asserts that a value is the type `Output`.
+ */
+export type AssertionFunction<Input, Output extends Input> = (
+  value: Input,
+) => asserts value is Output;
+
+/**
+ * Produces a `Brander<B>`, given a brand type `B`. By default this returns
+ * `identity` and relies on type inference to give the return type the correct
+ * type. Optionally, `validator` can be used to assert on the value.
  *
- * @return `identity`
  * @example
  * ```
  * type UserId = Brand<number, 'user'>;
  * const UserId = make<UserId>();
  * const myUserId = UserId(42);
  * ```
+ * @example
+ * ```
+ * type UserId = Brand<number, 'user'>;
+ * const UserId = make<UserId>((value) => {
+ *   if (value <= 0) {
+ *     throw new Error(`Non-positive value: ${value}`);
+ *   }
+ * });
+ * UserId(42); // Ok
+ * UserId(-1); // Error: Non-positive value: -1
+ * ```
  */
-export function make<B extends AnyBrand>(): Brander<B> {
-  return identity;
+export function make<B extends AnyBrand>(
+  validator?: AssertionFunction<BaseOf<B>, B>,
+): Brander<B> {
+  if (!validator) {
+    return identity;
+  }
+
+  return (underlying: BaseOf<B>): B => {
+    (validator as Brander<B>)(underlying);
+    return underlying as B;
+  };
 }
