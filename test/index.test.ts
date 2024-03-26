@@ -15,7 +15,7 @@ describe('make', () => {
     expect(make<AnyBrand>()).toBe(identity);
   });
 
-  it('utilizes the validator when one is provided with explicit validator types and an implicit brand types', () => {
+  it('uses the validator when one is provided with explicit validator types and an implicit brand type', () => {
     const isPositive = (value: number): asserts value is PositiveNumber => {
       if (value <= 0) {
         throw new Error(`Non-positive: ${value}`);
