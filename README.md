@@ -188,7 +188,7 @@ const UserId: Brander<UserId> = identity;
 
 ### `function make<B extends AnyBrand>(): Brander<B>`
 
-Produces a `Brander<B>`, given a brand type `B`. This simply returns
+Produces a `Brander<B>`, given a brand type `B`. By default this returns
 `identity` but relies on type inference to give the return type the correct
 type.
 
@@ -198,6 +198,20 @@ Example:
 type UserId = Brand<number, 'user'>;
 const UserId = make<UserId>();
 const myUserId = UserId(42);
+```
+
+Optionally, you may provide a validation function to assert that the value is
+the expected data shape. This may be done by passing a function to `make`:
+
+```ts
+type UserId = Brand<number, 'user'>;
+const UserId = make<UserId>((value) => {
+  if (value <= 0) {
+    throw new Error(`Non-positive value: ${value}`);
+  }
+});
+UserId(42); // Ok
+UserId(-1); // Error: Non-positive value: -1
 ```
 
 ## Complete Example
