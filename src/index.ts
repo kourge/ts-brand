@@ -1,4 +1,19 @@
 /**
+ * A helper type to safely retrieve an existing brand container from a type.
+ * If no brand exists, it defaults to an empty object.
+ */
+type GetBrandContainer<T, ReservedName extends string> = T extends {
+  [K in ReservedName]: infer B;
+}
+  ? B
+  : {};
+
+/**
+ * A unique symbol used for the `__witness__` property to prevent property name collisions.
+ */
+declare const __witness__: unique symbol;
+
+/**
  * A `Brand` is a type that takes at minimum two type parameters. Given a base
  * type `Base` and some unique and arbitrary branding type `Branding`, it
  * produces a type based on but distinct from `Base`. The resulting branded
@@ -29,7 +44,17 @@ export type Brand<
   Base,
   Branding,
   ReservedName extends string = '__type__',
-> = Base & {[K in ReservedName]: Branding} & {__witness__: Base};
+> = Base & {
+  [K in ReservedName]: GetBrandContainer<Base, ReservedName> & {
+    [B in Branding & string]: true;
+  };
+} & {
+  /**
+   * The `__witness__` property stores the immediate base type, allowing `BaseOf`
+   * to correctly infer the type needed by the `make` function's factory.
+   */
+  [__witness__]: Base;
+};
 
 /**
  * An `AnyBrand` is a branded type based on any base type branded with any
@@ -39,9 +64,17 @@ export type Brand<
 export type AnyBrand = Brand<unknown, any>;
 
 /**
- * `BaseOf` is a type that takes any branded type `B` and yields its base type.
+ * `BaseOf` is a type that takes any branded type `B` and yields its immediate base type.
  */
-export type BaseOf<B extends AnyBrand> = B['__witness__'];
+export type BaseOf<B extends AnyBrand> = B[typeof __witness__];
+
+/**
+ * `RootOf` is a type that takes any branded type `B` and yields its
+ * absolute, primitive base type by recursively unwrapping it.
+ * This allows you to unbrand any hierarchically branded types.
+ */
+export type RootOf<B extends AnyBrand> =
+  BaseOf<B> extends AnyBrand ? RootOf<BaseOf<B>> : BaseOf<B>;
 
 /**
  * A `Brander` is a function that takes a value of some base type and casts

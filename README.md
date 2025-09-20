@@ -148,6 +148,22 @@ enum TimeTag {}
 type Time = Brand<number, TimeTag>;
 ```
 
+Brands can also be applied hierarchically. If you brand an already branded
+type, the new type will be a subtype of the base brand. This allows you to
+create more specific types that are still assignable to their less specific
+counterparts, but not vice-versa.
+
+Example:
+
+```ts
+type Uuid = Brand<string, 'Uuid'>;
+type PostId = Brand<Uuid, 'PostId'>;
+
+declare const postId: PostId;
+const uuid: Uuid = postId; // This is OK
+const anotherPostId: PostId = uuid; // Error!
+```
+
 ### `type AnyBrand`
 
 An `AnyBrand` is a branded type based on any base type branded with any
@@ -156,7 +172,29 @@ when manipulating branded types in general.
 
 ### `type BaseOf<B extends AnyBrand>`
 
-`BaseOf` is a type that takes any branded type `B` and yields its base type.
+`BaseOf` is a type that takes any branded type `B` and yields its immediate
+base type. For a hierarchically branded type, this will be the branded type it
+was derived from, not the original primitive.
+
+```ts
+type Uuid = Brand<string, 'Uuid'>;
+type PostId = Brand<Uuid, 'PostId'>;
+
+type PostIdBase = BaseOf<PostId>; // This is Uuid, not string.
+```
+
+### `type RootOf<B extends AnyBrand>`
+
+`RootOf` is a type that takes any branded type `B` and yields its
+absolute, primitive base type by recursively unwrapping it.
+This allows you to unbrand any hierarchically branded types.
+
+```ts
+type Uuid = Brand<string, 'Uuid'>;
+type PostId = Brand<Uuid, 'PostId'>;
+
+type PostIdRoot = RootOf<PostId>; // This is string.
+```
 
 ### `type Brander<B extends AnyBrand>`
 
